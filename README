@@ -1,0 +1,1 @@
+This is an example project demostrating the ability to use multiple versions of WebDriver at once and reuse them. Everything is driven by cucumber, whilst all drivers are discarded at the end of the test (tear down).
