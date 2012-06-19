@@ -24,25 +24,25 @@
       <dependency>
 			<groupId>info.cukes</groupId>
 			<artifactId>cucumber-junit</artifactId>
-			<version>1.0.0.RC20</version>
+			<version>1.0.4</version>
 			<scope>test</scope>
 		</dependency>
         <!--<dependency>-->
 			<!--<groupId>info.cukes</groupId>-->
 			<!--<artifactId>cucumber-spring</artifactId>-->
-			<!--<version>1.0.0.RC20</version>-->
+			<!--<version>1.0.4</version>-->
 			<!--<scope>test</scope>-->
 		<!--</dependency>-->
 		<dependency>
 			<groupId>info.cukes</groupId>
 			<artifactId>cucumber-java</artifactId>
-			<version>1.0.0.RC20</version>
+			<version>1.0.4</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>info.cukes</groupId>
 			<artifactId>cucumber-picocontainer</artifactId>
-			<version>1.0.0.RC20</version>
+			<version>1.0.4</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -76,16 +76,21 @@
         <artifactId>jaxen</artifactId>
         <version>1.1.1</version>
     </dependency>
-     <dependency>
-         <groupId>org.seleniumhq.selenium</groupId>
-         <artifactId>selenium-java</artifactId>
-         <version>2.19.0</version>
-     </dependency>
-    <dependency>
+      <dependency>
+          <groupId>org.seleniumhq.selenium</groupId>
+          <artifactId>selenium-java</artifactId>
+          <version>2.23.1</version>
+      </dependency>
+      <dependency>
         <groupId>velocity</groupId>
         <artifactId>velocity</artifactId>
         <version>1.5</version>
     </dependency>
+      <dependency>
+          <groupId>org.seleniumhq.selenium</groupId>
+          <artifactId>selenium-common</artifactId>
+          <version>2.0b1</version>
+      </dependency>
 
   </dependencies>
 

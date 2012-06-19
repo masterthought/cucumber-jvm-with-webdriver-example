@@ -1,6 +1,6 @@
 package org.test.web.page.objects;
 
-import org.test.web.JZDriver;
+import org.test.web.JZDrivers;
 
 import static org.openqa.selenium.support.PageFactory.initElements;
 
@@ -12,6 +12,6 @@ public class PageInstantiator<T> {
     }
 
     public <T> T getPageInstance() throws Exception {
-        return (T) initElements(JZDriver.getCurrentDriver(), this.t.getClass());
+        return (T) initElements(JZDrivers.getFirstDriver(), this.t.getClass());
     }
 }
