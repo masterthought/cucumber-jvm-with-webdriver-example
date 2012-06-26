@@ -1,77 +1,76 @@
 package org.test.launch;
 
+import cucumber.annotation.en.And;
 import cucumber.annotation.en.Given;
-import org.openqa.selenium.WebDriver;
+import cucumber.annotation.en.Then;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 import org.test.web.JZDriver;
+import org.test.web.JZDrivers;
 import org.test.web.page.objects.GmailHomePage;
 import org.test.web.page.objects.GmailInboxPage;
 
-import java.util.HashMap;
-import java.util.Map;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 
-/**
- * Created by IntelliJ IDEA.
- * User: kostasmamalis
- * Date: 26/03/2012
- * Time: 14:04
- * To change this template use File | Settings | File Templates.
- */
 public class GoogleSteps {
 
-    private WebDriver mDriver;
-    private GmailHomePage homePage;
-    private GmailInboxPage resultsPage;
-    private Integer driverPointer;
+    private JZDriver currentJzDriver;
+    GmailInboxPage gmailInboxPage;
 
-    private static Map<Integer,WebDriver> drivers = new HashMap<Integer, WebDriver>();
-
-
-    @Given("^I have opened my browser No.(\\d+)$")
-    public void I_have_opened_my_browser(Integer integer) throws Exception {
-        driverPointer = integer;
-        goToHomePage(driverPointer);
+    @Given("^I have opened my browser No (\\d+)$")
+    public void I_have_opened_my_browser(Integer browserNumber) throws Exception {
+        currentJzDriver = JZDrivers.getJzDriverInstance(browserNumber);
     }
 
-    @Given("^I am using browser No.(\\d+)$")
-    public void I_am_using_browser(Integer integer) throws Exception{
+    @Given("^I am using browser No (\\d+)$")
+    public void I_am_using_browser(Integer integer) throws Exception {
         setFocusOnWebDriver(integer);
     }
 
-     @Given("^I visit (.+)$")
-     public void I_visit(String s) throws Exception{
-        mDriver.get(s);
-         Thread.sleep(3000);
+    @Given("^I visit (.+)$")
+    public void I_visit(String s) throws Exception {
+        currentJzDriver.getWebDriver().get(s);
     }
 
-
-    private void goToHomePage(Integer i) throws Exception {
+    private void setFocusOnWebDriver(Integer browserNumber) throws Exception {
         try {
-            mDriver = JZDriver.getCurrent(i);
-            homePage = new GmailHomePage(mDriver);
-        } catch(UnreachableBrowserException e){
-            mDriver = JZDriver.resetAndGet(i);
-            homePage.setWebDriver(mDriver);
+            currentJzDriver = JZDrivers.getJzDriverInstance(browserNumber);
+        } catch (UnreachableBrowserException e) {
+            currentJzDriver = JZDrivers.resetAndGet(browserNumber);
         }
     }
 
-    private void setFocusOnWebDriver(Integer i) throws Exception{
-         try {
-             driverPointer = i;
-             mDriver = JZDriver.getCurrent(i);
-        } catch(UnreachableBrowserException e){
-             driverPointer = i;
-             mDriver = JZDriver.resetAndGet(i);
-        }
-    }
-
-    @Given("^I login with username:'(.+)' and password '(.+)'$")
-    public void login_with_username_and_password(String username, String password){
+    @Given("^I login with username:'(.*)' and password '(.*)'$")
+    public void login_with_username_and_password(String username, String password) {
         try {
-            resultsPage = homePage.loginAs(username, password);
-        } catch (InterruptedException e) {
+            GmailHomePage homePage = new GmailHomePage(currentJzDriver);
+            gmailInboxPage = homePage.loginAs(username, password);
+        } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("Test aborted.");
             org.junit.Assert.assertFalse(true);
         }
     }
+
+    @Then("^I have (\\d+) Browser instances$")
+    public void I_have_Browser_instances(int browserInstanceCount) {
+        assertThat(browserInstanceCount, is(JZDrivers.getJzDrivers().size()));
+    }
+
+    @Then("^login was successful$")
+    public void loginWasSuccessful() throws Exception {
+        assertThat(gmailInboxPage.isLoginSuccessful(), is(true));
+    }
+
+    @Then("^login was unsuccessful$")
+    public void loginWasUnsuccessful() {
+        assertThat(gmailInboxPage.isLoginSuccessful(), is(false));
+    }
+
+    @And("^I have no Browser instances$")
+    public void I_have_no_Browser_instances() {
+        JZDrivers.clearDrivers();
+        I_have_Browser_instances(0);
+    }
+
 }
