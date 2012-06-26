@@ -1,6 +1,6 @@
 package org.test.web.page.objects;
 
-import org.test.web.JZDriver;
+import org.test.web.JZDrivers;
 
 public class LoginPage{
 
@@ -15,14 +15,14 @@ public class LoginPage{
         LoginPage loginPage = LoginPage.getInstance();
 
         System.out.println(loginPage.getClass().toString());
-        if(JZDriver.getCurrentDriver() != null){
-            JZDriver.getCurrentDriver().quit();
+        if(JZDrivers.getFirstDriver() != null){
+            JZDrivers.getFirstDriver().quit();
         }
 
         HomePage homePage = HomePage.getInstance();
         System.out.println(homePage.getClass().toString());
-        if(JZDriver.getCurrentDriver() != null){
-            JZDriver.getCurrentDriver().quit();
+        if(JZDrivers.getFirstDriver() != null){
+            JZDrivers.getFirstDriver().quit();
         }
     }
 
